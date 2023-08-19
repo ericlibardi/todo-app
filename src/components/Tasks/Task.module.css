@@ -1,0 +1,17 @@
+.taskCard {
+  display: flex;
+  height: 100px;
+  padding: 8px 24px;
+  animation: rollIn 1s forwards;
+}
+
+@keyframes rollIn {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
