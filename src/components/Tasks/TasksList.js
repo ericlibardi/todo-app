@@ -6,19 +6,20 @@ import classes from "./TaskList.module.css";
 const Tasks = [
   {
     id: "fds23",
-    description: "first task for the app",
+    description:
+      `First task for the app`,
     due: new Date("10-23-2023"),
     completed: false,
   },
   {
     id: "fht93",
-    description: "second task for the app",
+    description: "Second task for the app",
     due: new Date("11-09-2023"),
-    completed: false,
+    completed: true,
   },
   {
     id: "fws25",
-    description: "third task for the app",
+    description: "Third task for the app",
     due: new Date("12-14-2023"),
     completed: false,
   },

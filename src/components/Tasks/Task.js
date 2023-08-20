@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 
 import Card from "../UI/Card";
+import GroupButton from "./GroupButton";
 import classes from "./Task.module.css";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 
 function Task(props) {
   const [dueDays, setDueDays] = useState(0);
@@ -24,14 +28,34 @@ function Task(props) {
     setDueDays(differenceInDays);
   }, [due]);
 
+  let taskState = "";
+
+  if (dueDays <= 0) {
+    taskState = "overdue";
+  }
+
+  if (props.task.completed) {
+    taskState = "completed";
+  }
+
   return (
-    <Card className={classes.taskCard}>
-      <div>
+    <Card className={`${classes.taskCard} ${classes[taskState]}`}>
+      {taskState === "completed" && (
+        <FontAwesomeIcon
+          icon={faCheckCircle}
+          className={`${classes.taskCard__completedIcon}`}
+        />
+      )}
+
+      <div className={classes.taskCard__details}>
         <p>{props.task.description}</p>
       </div>
-      <div>
-        <p>{dueDays} dias</p>
+      <div className={classes.taskCard__dueDate}>
+        <p>
+          {dueDays} <br /> dias
+        </p>
       </div>
+      <GroupButton />
     </Card>
   );
 }

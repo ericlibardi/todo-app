@@ -1,0 +1,32 @@
+.groupButton {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: 25px;
+}
+
+.groupButton button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    flex-grow: 2
+}
+
+.groupButton button:first-of-type {
+    background-color: rgb(30, 66, 30);
+}
+
+.groupButton button:nth-of-type(2) {
+    background-color: rgb(75, 71, 18);
+}
+
+.groupButton button:last-of-type {
+    background-color: rgb(75, 18, 18);
+}
+
+.groupButton button svg {
+    color: rgb(238, 238, 238);
+    font-size: 14px;
+
+}
