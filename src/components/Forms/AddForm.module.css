@@ -1,0 +1,27 @@
+.addForm {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 12px 24px 16px;
+}
+
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputWrapper label {
+  margin-bottom: 4px;
+}
+
+.buttonWrapper {
+  display: flex;
+  justify-content: flex-end;
+  gap: 24px;
+}
+
+.errorMessage {
+  color: red;
+  font-size: 12px;
+  margin-bottom: 0;
+}

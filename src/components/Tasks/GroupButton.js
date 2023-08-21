@@ -8,13 +8,13 @@ import { faCheck, faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 function GroupButton(props) {
   return (
     <div className={classes.groupButton}>
-      <button>
+      <button onClick={props.onChangeCompletion}>
         <FontAwesomeIcon icon={faCheck} />
       </button>
-      <button>
+      <button onClick={props.onEdit}>
         <FontAwesomeIcon icon={faPencil} />
       </button>
-      <button>
+      <button onClick={props.onDelete}>
         <FontAwesomeIcon icon={faTrash} />
       </button>
     </div>

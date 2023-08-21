@@ -1,4 +1,9 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addTask } from "../../store/reducers/tasksreducer";
+
+import Modal from "../UI/Modal";
+import AddForm from "../Forms/AddForm";
 
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
@@ -16,6 +21,9 @@ const filterOptions = [
 
 function Toolbar() {
   const [filter, setFilter] = useState(0);
+  const [showModal, setShowModal] = useState(false);
+
+  const dispatch = useDispatch();
 
   /** Handle the selection of the Filter Dropdown
    *
@@ -25,9 +33,19 @@ function Toolbar() {
     setFilter(event);
   };
 
+  const toggleModal = () => {
+    setShowModal((prevState) => {
+      return !prevState;
+    });
+  };
+
+  const addTaskHandler = (newTask) => {
+    dispatch(addTask(newTask));
+  };
+
   return (
     <article className={classes.toolbar}>
-      <span className={classes.toolbar__item}>
+      <span className={classes.toolbar__item} onClick={toggleModal}>
         <FontAwesomeIcon icon={faPlus} className={classes.toolbar__icon} />
         <p>Adicionar Tarefa</p>
       </span>
@@ -46,22 +64,17 @@ function Toolbar() {
           <Dropdown.Item eventKey="2">{filterOptions[2]}</Dropdown.Item>
         </DropdownButton>
       </span>
-    </article>
 
-    // <Accordion className={classes.accordion}>
-    //   <Accordion.Item eventKey="0">
-    //     <Accordion.Header className={classes.accordion__header}>
-    //       <span className="me-3">
-    //         <FontAwesomeIcon icon={faScrewdriverWrench} />
-    //       </span>
-    //       Barra de Ações
-    //     </Accordion.Header>
-    //     <Accordion.Body>
-    //       <FontAwesomeIcon icon={faPlus} />
-    //       <p>Adicionar Tarefa</p>
-    //     </Accordion.Body>
-    //   </Accordion.Item>
-    // </Accordion>
+      {showModal && (
+        <Modal title="Adicionar Tarefa">
+          <AddForm
+            button2Text="Adicionar"
+            cancelRequest={toggleModal}
+            confirmRequest={addTaskHandler}
+          />
+        </Modal>
+      )}
+    </article>
   );
 }
 
