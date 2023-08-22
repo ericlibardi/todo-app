@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addTask } from "../../store/reducers/tasksreducer";
+import { filterTasks } from "../../store/reducers/filterReducer";
 
 import Modal from "../UI/Modal";
 import AddForm from "../Forms/AddForm";
@@ -26,19 +27,28 @@ function Toolbar() {
   const dispatch = useDispatch();
 
   /** Handle the selection of the Filter Dropdown
-   *
+   * set the current filter and dispatch to the reducer
    * @param {*} event - selection event of the Dropdown
    */
   const dropdownSelectionHandler = (event) => {
     setFilter(event);
+
+    dispatch(filterTasks(event));
   };
 
+  /** Toggle current visibility of Modal
+   *
+   */
   const toggleModal = () => {
     setShowModal((prevState) => {
       return !prevState;
     });
   };
 
+  /** Handle request to add new task
+   * dispatch the new task to the reducer
+   * @param {*} newTask - new Task defined by the user
+   */
   const addTaskHandler = (newTask) => {
     dispatch(addTask(newTask));
   };

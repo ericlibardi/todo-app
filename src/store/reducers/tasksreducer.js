@@ -27,9 +27,11 @@ export const tasksSlice = createSlice({
   name: "tasks",
   initialState,
   reducers: {
+    // Add new Task into the list
     addTask: (state, action) => {
       state.tasksList.push(action.payload);
     },
+    // Change task edited by user
     editTask: (state, action) => {
       const taskId = action.payload.id;
 
@@ -40,6 +42,7 @@ export const tasksSlice = createSlice({
         id: taskId,
       };
     },
+    // Delete the task interacted by the user
     deleteTask: (state, action) => {
       const taskIndex = state.tasksList.findIndex(
         (task) => task.id === action.payload
@@ -47,6 +50,7 @@ export const tasksSlice = createSlice({
 
       state.tasksList.splice(taskIndex, 1);
     },
+    // Change current status of completion of the task
     toogleCompletionState: (state, action) => {
       const taskIndex = state.tasksList.findIndex(
         (task) => task.id === action.payload

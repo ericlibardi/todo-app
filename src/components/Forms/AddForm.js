@@ -20,14 +20,21 @@ function AddForm(props) {
     message: "",
   });
 
-  useEffect(() => {
-    if (props.task) {
-      setDescription(props.task.description);
-      setDate(props.task.due);
-      setCompleted(props.task.completed);
-    }
-  }, []);
+  const { task } = props;
 
+  useEffect(() => {
+    // if task is passed as a props, set the initial values so the form is filled
+    if (task) {
+      setDescription(task.description);
+      setDate(task.due);
+      setCompleted(task.completed);
+    }
+  }, [task]);
+
+  /** Handles the change on the description input
+   *
+   * @param {*} event event for changing the input
+   */
   const descriptionChangeHandler = (event) => {
     setDescription(event.target.value);
 
@@ -36,6 +43,10 @@ function AddForm(props) {
     }
   };
 
+  /** Handles the change on the date input
+   *
+   * @param {*} event event for changing the input
+   */
   const dateChangeHandler = (event) => {
     setDate(event.target.value);
 
@@ -44,15 +55,27 @@ function AddForm(props) {
     }
   };
 
+  /** Handles the change on the Completed input switch
+   *
+   * @param {*} event event for changing the input
+   */
   const completedCHangeHandler = (event) => {
     setCompleted((prevState) => !prevState);
   };
 
+  /** Handle the request of submittion of the new task
+   *
+   * @param {*} event event of submit of the form
+   * @returns
+   */
   const submitHandler = (event) => {
     event.preventDefault();
 
     let invalid = false;
 
+    /** Description must have at least 10 characters
+     * if it is empty or doesn't have at least 10, place error message
+     */
     if (description.trim().length < 10) {
       setIsDescriptionValid({
         isValid: false,
@@ -65,11 +88,17 @@ function AddForm(props) {
       invalid = true;
     }
 
+    /** Date can't be empty
+     * if it is, inform the user
+     */
     if (date.length === 0) {
       setIsDateValid({ isValid: false, message: "Escolha uma data" });
       invalid = true;
     }
 
+    /** Date must be higher than today
+     *  if it isn't, inform the customer
+     */
     if (new Date(date) < new Date()) {
       setIsDateValid({
         isValid: false,
@@ -78,6 +107,7 @@ function AddForm(props) {
       invalid = true;
     }
 
+    // if any error identified, cancel the method
     if (invalid) return;
 
     props.confirmRequest({
@@ -92,6 +122,9 @@ function AddForm(props) {
     props.cancelRequest();
   };
 
+  /** Handle the click over the cancel button
+   * Clears the form and closes the modal
+   */
   const cancelClickHandler = () => {
     setDescription("");
     setDate("");

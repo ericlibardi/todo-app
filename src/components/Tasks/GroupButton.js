@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 function GroupButton(props) {
+
   return (
     <div className={classes.groupButton}>
       <button onClick={props.onChangeCompletion}>
@@ -21,4 +22,4 @@ function GroupButton(props) {
   );
 }
 
-export default GroupButton;
+export default React.memo(GroupButton);

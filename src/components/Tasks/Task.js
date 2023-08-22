@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import {
   deleteTask,
@@ -22,6 +22,7 @@ function Task(props) {
   const dispatch = useDispatch();
 
   const { due } = props.task;
+  const { id: taskId } = props.task;
 
   useEffect(() => {
     const currentDate = new Date();
@@ -31,7 +32,8 @@ function Task(props) {
         in order to get the remaining days for the task   
     */
     const differenceInTime = dueDate.getTime() - currentDate.getTime();
-    let differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24));
+    let differenceInDays =
+      Math.floor(differenceInTime / (1000 * 3600 * 24)) + 1;
 
     if (differenceInDays <= 0) {
       differenceInDays = 0;
@@ -40,18 +42,31 @@ function Task(props) {
     setDueDays(differenceInDays);
   }, [due]);
 
-  const deleteHandler = () => {
-    dispatch(deleteTask(props.task.id));
-  };
+  /** Handle the request to delete a specific task
+   * Dispatch the request to the reducer
+   */
+  const deleteHandler = useCallback(() => {
+    dispatch(deleteTask(taskId));
+  }, [dispatch, taskId]);
 
-  const toogleCompletion = () => {
-    dispatch(toogleCompletionState(props.task.id));
-  };
+  /** Handle the request to change the Task's completion state
+   * dispatch the request to the reducer
+   */
+  const toogleCompletion = useCallback(() => {
+    dispatch(toogleCompletionState(taskId));
+  }, [dispatch, taskId]);
 
-  const toggleModal = () => {
+  /** Changes the visibility of the Modal
+   * if should be shown or hidden
+   */
+  const toggleModal = useCallback(() => {
     setShowModal((prevState) => !prevState);
-  };
+  }, []);
 
+  /** Handle the request to edit the task
+   * dispatch the request to the reducer
+   * @param {*} editedTask - edited task by the user
+   */
   const editTaskHandler = (editedTask) => {
     dispatch(editTask(editedTask));
   };
@@ -81,7 +96,7 @@ function Task(props) {
         </div>
         <div className={classes.taskCard__dueDate}>
           <p>
-            {dueDays} <br /> dias
+            {dueDays} <br /> dia{dueDays === 1 ? "" : "s"}
           </p>
         </div>
         <GroupButton
