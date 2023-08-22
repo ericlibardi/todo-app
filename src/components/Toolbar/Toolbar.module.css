@@ -14,15 +14,18 @@
 .toolbar__icon {
   margin-right: 8px;
   color: rgb(155, 155, 155);
+  transition: 0.5s;
 }
 
 .toolbar__item p {
   margin: 0px;
   color: rgb(155, 155, 155);
+  transition: 0.5s;
 }
 
 .toolbar__item:hover .toolbar__icon,
-.toolbar__item:hover:hover p {
+.toolbar__item:hover p,
+.toolbar__item:hover button {
   cursor: pointer;
-  color: rgb(43, 43, 43);
+  color: rgb(43, 43, 43) !important;
 }

@@ -7,12 +7,15 @@ import Modal from "../UI/Modal";
 import AddForm from "../Forms/AddForm";
 
 import Dropdown from "react-bootstrap/Dropdown";
-import DropdownButton from "react-bootstrap/DropdownButton";
 
 import classes from "./Toolbar.module.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faFilter } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlus,
+  faFilter,
+  faChevronDown,
+} from "@fortawesome/free-solid-svg-icons";
 
 const filterOptions = [
   "Todas as Tarefas",
@@ -61,18 +64,24 @@ function Toolbar() {
       </span>
       <span className={classes.toolbar__item}>
         <FontAwesomeIcon icon={faFilter} className={classes.toolbar__icon} />
-        <DropdownButton
+        <Dropdown
           align="end"
           id="DropDownFilter"
-          size="sm"
-          title={filterOptions[filter]}
-          variant="white"
           onSelect={dropdownSelectionHandler}
         >
-          <Dropdown.Item eventKey="0">{filterOptions[0]}</Dropdown.Item>
-          <Dropdown.Item eventKey="1">{filterOptions[1]}</Dropdown.Item>
-          <Dropdown.Item eventKey="2">{filterOptions[2]}</Dropdown.Item>
-        </DropdownButton>
+          <Dropdown.Toggle variant="white" id="dropdown-basic">
+            {filterOptions[filter]}{" "}
+            <FontAwesomeIcon
+              icon={faChevronDown}
+              className={classes.toolbar__iconchevron}
+            />
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            <Dropdown.Item eventKey="0">{filterOptions[0]}</Dropdown.Item>
+            <Dropdown.Item eventKey="1">{filterOptions[1]}</Dropdown.Item>
+            <Dropdown.Item eventKey="2">{filterOptions[2]}</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
       </span>
 
       {showModal && (
