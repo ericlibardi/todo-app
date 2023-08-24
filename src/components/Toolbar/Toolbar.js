@@ -69,7 +69,7 @@ function Toolbar() {
     } else {
       isMounted.current = true;
     }
-  }, [order]);
+  }, [order, dispatch]);
 
   /** Handle the selection of the Filter Dropdown
    * set the current filter and dispatch to the reducer
