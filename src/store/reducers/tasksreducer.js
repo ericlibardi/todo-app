@@ -1,26 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  tasksList: [
-    {
-      id: "fds23",
-      description: `First task for the app`,
-      due: "2023-10-23",
-      completed: false,
-    },
-    {
-      id: "fht93",
-      description: "Second task for the app",
-      due: "2023-11-09",
-      completed: true,
-    },
-    {
-      id: "fgfd3",
-      description: "Third task for the app",
-      due: "2023-12-14",
-      completed: false,
-    },
-  ],
+  tasksList: [],
 };
 
 export const tasksSlice = createSlice({
@@ -30,6 +11,9 @@ export const tasksSlice = createSlice({
     // Add new Task into the list
     addTask: (state, action) => {
       state.tasksList.push(action.payload);
+    },
+    initializeTasks: (state, action) => {
+      state.tasksList = [...action.payload];
     },
     // Change task edited by user
     editTask: (state, action) => {
@@ -44,6 +28,11 @@ export const tasksSlice = createSlice({
     },
     // Delete the task interacted by the user
     deleteTask: (state, action) => {
+      if (state.tasksList.length === 1) {
+        state.tasksList = [];
+        return;
+      }
+
       const taskIndex = state.tasksList.findIndex(
         (task) => task.id === action.payload
       );
@@ -62,7 +51,12 @@ export const tasksSlice = createSlice({
   },
 });
 
-export const { addTask, editTask, deleteTask, toogleCompletionState } =
-  tasksSlice.actions;
+export const {
+  addTask,
+  initializeTasks,
+  editTask,
+  deleteTask,
+  toogleCompletionState,
+} = tasksSlice.actions;
 
 export default tasksSlice.reducer;

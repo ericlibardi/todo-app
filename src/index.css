@@ -8,11 +8,22 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+#root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
 #DropDownFilter #dropdown-basic {
   color: rgb(155, 155, 155);
   font-size: 16px;
   padding: 2px 0px;
   border: none;
+}
+
+#DropDownFilter #dropdown-basic svg {
+  margin-left: 4px;
 }
 
 #DropDownFilter #dropdown-basic::after {
@@ -35,4 +46,19 @@
 
 .dropdown-menu .dropdown-item:hover {
   background-color: rgb(132, 194, 146);
+}
+
+#switch-taskcompletition {
+  background-image: url("./assets/circle-image.png");
+  background-color: lightgray;
+  border-color: lightgray;
+}
+
+#switch-taskcompletition:checked {
+  background-color: rgb(18, 95, 28);
+  border-color: rgb(18, 95, 28);
+}
+
+#switch-taskcompletition:focus {
+  box-shadow: none;
 }

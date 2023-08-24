@@ -163,7 +163,7 @@ function AddForm(props) {
         <Form.Check
           checked={completed}
           type="switch"
-          id="custom-switch"
+          id="switch-taskcompletition"
           label="Completa"
           onChange={completedCHangeHandler}
         />

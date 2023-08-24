@@ -1,9 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export const filterOptions = ["allTasks", "completed", "pending"];
+export const orderOptions = ["noOrder", "recent", "oldest"];
 
 const initialState = {
   filter: filterOptions[0],
+  order: orderOptions[0],
 };
 
 export const filterSlice = createSlice({
@@ -14,9 +16,12 @@ export const filterSlice = createSlice({
     filterTasks: (state, action) => {
       state.filter = filterOptions[action.payload];
     },
+    orderTasks: (state, action) => {
+      state.order = orderOptions[action.payload];
+    },
   },
 });
 
-export const { filterTasks } = filterSlice.actions;
+export const { filterTasks, orderTasks } = filterSlice.actions;
 
 export default filterSlice.reducer;

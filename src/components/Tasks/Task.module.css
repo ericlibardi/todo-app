@@ -2,6 +2,9 @@
   display: flex;
   position: relative;
   height: 80px;
+  min-height: 80px;
+  width: min(900px, 100%);
+  margin: 0 auto;
   overflow: hidden;
   animation: rollIn 1s forwards;
 }
@@ -26,7 +29,7 @@
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  color: rgb(46, 46, 46)
+  color: rgb(46, 46, 46);
 }
 
 .taskCard__dueDate {
@@ -42,7 +45,7 @@
   font-size: 18px;
   font-weight: 600;
   margin: 0;
-  color: rgb(105, 71, 77)
+  color: rgb(105, 71, 77);
 }
 
 .overdue p {
@@ -61,5 +64,19 @@
   to {
     transform: translateY(0px);
     opacity: 1;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .taskCard__details {
+    padding: 14px 6px 14px 12px;
+  }
+
+  .taskCard__dueDate {
+    min-width: 54px;
+  }
+
+  .taskCard__dueDate p {
+    font-size: 16px;
   }
 }
