@@ -1,0 +1,9 @@
+.button {
+  border: none;
+  border-radius: 16px;
+  padding: 4px 12px;
+}
+
+.button:hover {
+  filter: brightness(90%);
+}

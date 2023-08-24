@@ -1,12 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { useDispatch } from "react-redux";
+import { addTask } from "../../store/reducers/tasksreducer";
+import { filterTasks, orderTasks } from "../../store/reducers/filterReducer";
+
+import Modal from "../UI/Modal";
+import AddForm from "../Forms/AddForm";
 
 import Dropdown from "react-bootstrap/Dropdown";
-import DropdownButton from "react-bootstrap/DropdownButton";
 
 import classes from "./Toolbar.module.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faFilter } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlus,
+  faFilter,
+  faChevronDown,
+  faCancel,
+  faArrowUp,
+  faArrowDown,
+} from "@fortawesome/free-solid-svg-icons";
 
 const filterOptions = [
   "Todas as Tarefas",
@@ -14,54 +26,137 @@ const filterOptions = [
   "Tarefas pendentes",
 ];
 
+const filterOptionsReduced = ["Todas", "Completas", "Pendentes"];
+
+function debounce(fn, ms) {
+  let timer;
+  return () => {
+    clearTimeout(timer);
+    timer = setTimeout((_) => {
+      timer = null;
+      fn.apply(this, arguments);
+    }, ms);
+  };
+}
+
 function Toolbar() {
   const [filter, setFilter] = useState(0);
+  const [showModal, setShowModal] = useState(false);
+  const [order, setOrder] = useState(0);
+  const [dimensions, setDimensions] = useState(window.innerWidth);
+
+  const isMounted = useRef(false);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const debouncedHandleResize = debounce(function handleREsize() {
+      if (window.innerWidth !== dimensions) {
+        setDimensions(window.innerWidth);
+      }
+    }, 50);
+
+    window.addEventListener("resize", debouncedHandleResize);
+
+    return () => {
+      window.removeEventListener("resize", debouncedHandleResize);
+    };
+  });
+
+  useEffect(() => {
+    if (isMounted) {
+      dispatch(orderTasks(order));
+    } else {
+      isMounted.current = true;
+    }
+  }, [order]);
 
   /** Handle the selection of the Filter Dropdown
-   *
+   * set the current filter and dispatch to the reducer
    * @param {*} event - selection event of the Dropdown
    */
   const dropdownSelectionHandler = (event) => {
     setFilter(event);
+
+    dispatch(filterTasks(event));
+  };
+
+  /** Handle the request to order the tasks
+   *  set the current order
+   */
+  const orderRequestHandler = () => {
+    setOrder((prevState) => {
+      let currentOrder = 0;
+
+      if (prevState < 2) currentOrder = prevState + 1;
+      return currentOrder;
+    });
+  };
+
+  /** Toggle current visibility of Modal
+   *
+   */
+  const toggleModal = () => {
+    setShowModal((prevState) => {
+      return !prevState;
+    });
+  };
+
+  /** Handle request to add new task
+   * dispatch the new task to the reducer
+   * @param {*} newTask - new Task defined by the user
+   */
+  const addTaskHandler = (newTask) => {
+    dispatch(addTask(newTask));
   };
 
   return (
     <article className={classes.toolbar}>
-      <span className={classes.toolbar__item}>
+      <span className={classes.toolbar__item} onClick={toggleModal}>
         <FontAwesomeIcon icon={faPlus} className={classes.toolbar__icon} />
-        <p>Adicionar Tarefa</p>
+        <p>{`Adicionar ${dimensions < 600 ? "" : "Tarefa"}`}</p>
       </span>
       <span className={classes.toolbar__item}>
         <FontAwesomeIcon icon={faFilter} className={classes.toolbar__icon} />
-        <DropdownButton
+        <Dropdown
           align="end"
           id="DropDownFilter"
-          size="sm"
-          title={filterOptions[filter]}
-          variant="white"
           onSelect={dropdownSelectionHandler}
         >
-          <Dropdown.Item eventKey="0">{filterOptions[0]}</Dropdown.Item>
-          <Dropdown.Item eventKey="1">{filterOptions[1]}</Dropdown.Item>
-          <Dropdown.Item eventKey="2">{filterOptions[2]}</Dropdown.Item>
-        </DropdownButton>
+          <Dropdown.Toggle variant="white" id="dropdown-basic">
+            {dimensions < 600
+              ? filterOptionsReduced[filter]
+              : filterOptions[filter]}
+            <FontAwesomeIcon
+              icon={faChevronDown}
+              className={classes.toolbar__iconchevron}
+            />
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            <Dropdown.Item eventKey="0">{filterOptions[0]}</Dropdown.Item>
+            <Dropdown.Item eventKey="1">{filterOptions[1]}</Dropdown.Item>
+            <Dropdown.Item eventKey="2">{filterOptions[2]}</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
       </span>
-    </article>
+      <span className={classes.toolbar__item} onClick={orderRequestHandler}>
+        <FontAwesomeIcon
+          icon={order === 0 ? faCancel : order === 1 ? faArrowDown : faArrowUp}
+          className={classes.toolbar__icon}
+        />
+        <p>{`Ordenar ${dimensions < 600 ? "" : "Tarefas"}`}</p>
+      </span>
 
-    // <Accordion className={classes.accordion}>
-    //   <Accordion.Item eventKey="0">
-    //     <Accordion.Header className={classes.accordion__header}>
-    //       <span className="me-3">
-    //         <FontAwesomeIcon icon={faScrewdriverWrench} />
-    //       </span>
-    //       Barra de Ações
-    //     </Accordion.Header>
-    //     <Accordion.Body>
-    //       <FontAwesomeIcon icon={faPlus} />
-    //       <p>Adicionar Tarefa</p>
-    //     </Accordion.Body>
-    //   </Accordion.Item>
-    // </Accordion>
+      {showModal && (
+        <Modal title="Adicionar Tarefa">
+          <AddForm
+            button2Text="Adicionar"
+            cancelRequest={toggleModal}
+            confirmRequest={addTaskHandler}
+          />
+        </Modal>
+      )}
+    </article>
   );
 }
 
