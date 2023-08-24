@@ -22,7 +22,7 @@
   border: none;
 }
 
-#DropDownFilter #dropdown-basic svg {
+#DropDownFilter #dropdown-basic svg:last-of-type {
   margin-left: 4px;
 }
 

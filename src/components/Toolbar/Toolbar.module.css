@@ -29,3 +29,13 @@
   cursor: pointer;
   color: rgb(43, 43, 43) !important;
 }
+
+@media screen and (max-width: 600px) {
+  .toolbar {
+    gap: 18px;
+  }
+
+  .toolbar__icon {
+    margin-right: 4px;
+  }
+}

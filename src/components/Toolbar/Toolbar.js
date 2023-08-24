@@ -117,13 +117,16 @@ function Toolbar() {
         <p>{`Adicionar ${dimensions < 600 ? "" : "Tarefa"}`}</p>
       </span>
       <span className={classes.toolbar__item}>
-        <FontAwesomeIcon icon={faFilter} className={classes.toolbar__icon} />
         <Dropdown
           align="end"
           id="DropDownFilter"
           onSelect={dropdownSelectionHandler}
         >
           <Dropdown.Toggle variant="white" id="dropdown-basic">
+            <FontAwesomeIcon
+              icon={faFilter}
+              className={classes.toolbar__icon}
+            />
             {dimensions < 600
               ? filterOptionsReduced[filter]
               : filterOptions[filter]}
